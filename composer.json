@@ -97,6 +97,6 @@
         "serve": "php -S 0.0.0.0:8080 -t public/",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-        "swagger" : "vendor/bin/openapi src/ >docs/amra_swagger.yml"
+        "swagger" : "vendor/bin/openapi src/ >docs/expressive_api_swagger.yml"
     }
 }

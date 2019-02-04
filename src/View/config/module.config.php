@@ -7,7 +7,8 @@ namespace View;
 return [
     // site-pubtool-view
     'view' => [
-        'uics-pages-dashboard' => [
+        // site-pubtool-view
+        'unlikely-list-list' => [
             // this is the SQL needed to produce desired results for this combo of site, pubtool and view
             'sql' => '-- SQL Statement Goes Here --',
             // the query results are fed into this funciton, which then returns JSON according to the template

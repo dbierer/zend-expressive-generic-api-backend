@@ -22,9 +22,9 @@ class Constants
     const KEY_PUBTOOL_LIST        = 'pubtool_list';
 
     // defaults
-    const DEFAULT_SITE            = 'uics';
-    const DEFAULT_PUBTOOL         = 'PAGES';
-    const DEFAULT_VIEW            = 'home';
+    const DEFAULT_SITE            = 'unlikely';
+    const DEFAULT_PUBTOOL         = 'LIST';
+    const DEFAULT_VIEW            = 'unlikely-list-list';
 
     // common errors
     const ERROR_SITE_KEY_MISSING     = 'ERROR: site key is missing or invalid';

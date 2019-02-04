@@ -1,0 +1,377 @@
+openapi: 3.0.0
+info:
+  title: AMRA
+  version: '0.1'
+paths:
+  '/api/admin{/table}':
+    post:
+      summary: "Adds a row to any table\nPath: /api/admin/:table\nHTTP Method: POST"
+      parameters:
+        -
+          name: table
+          in: query
+          description: 'Name of the target database table'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: '(int) last insert ID if successful, 0 if not'
+  '/api/admin{/table}{/id}':
+    put:
+      summary: "Updates a row from any table\nPath: /api/admin/:table/:id\nHTTP Method: PUT,PATCH"
+      parameters:
+        -
+          name: table
+          in: query
+          description: 'Name of the target database table'
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'ID of the primary key for the row to be replaced'
+          schema:
+            type: int
+      responses:
+        '200':
+          description: '_table_ and _id_ params are mandatory. Returns 1 if successful, 0 if not'
+    delete:
+      summary: "Deletes a row from any table\nPath: /api/admin/:table/:id\nHTTP Method: DELETE"
+      parameters:
+        -
+          name: table
+          in: query
+          description: 'Name of the target database table'
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'ID of the primary key for the row to be deleted'
+          schema:
+            type: int
+      responses:
+        '200':
+          description: '_table_ and _id_ params are mandatory.  Returns 1 if successful, 0 if not successful'
+    patch:
+      summary: "Updates a row from any table\nPath: /api/admin/:table/:id\nHTTP Method: PUT,PATCH"
+      parameters:
+        -
+          name: table
+          in: query
+          description: 'Name of the target database table'
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'ID of the primary key for the row to be updated'
+          schema:
+            type: int
+      responses:
+        '200':
+          description: '_table_ and _id_ params are mandatory. Returns 1 if successful, 0 if not'
+  '/api/admin{/table}{/id}{/page}':
+    get:
+      summary: "Lists one or more rows from any table\nPath: /api/admin/:table/:id[/:page]\nHTTP Method: GET"
+      parameters:
+        -
+          name: table
+          in: query
+          description: 'Name of the target database table (mandatory)'
+          schema:
+            type: string
+        -
+          name: id
+          in: query
+          description: 'ID of the primary key for the row to be listed.  If set to 0 will return all rows. (mandatory)'
+          schema:
+            type: int
+        -
+          name: page
+          in: query
+          description: 'Used for pagination. Used to calculate the SQL OFFSET (optional)'
+          schema:
+            type: int
+      responses:
+        '200':
+          description: '_table_ and _id_ params are mandatory. If _id_ param == 0, return all rows paginated'
+  '/api/view{/site}{/pubtool}{/view}{/contentID}':
+    get:
+      summary: 'Returns data for site, pubtool and view.  The view actually selects a _strategy_ which represents the logic needed to produce the desired data view.'
+      parameters:
+        -
+          name: site
+          in: query
+          description: 'amra_org,uics_org or motorist_org'
+          schema:
+            type: string
+        -
+          name: pubtool
+          in: query
+          description: 'pages,component,glossary,etc.'
+          schema:
+            type: string
+        -
+          name: view
+          in: query
+          description: 'dashboard,detail,edit'
+          schema:
+            type: string
+        -
+          name: contentID
+          in: query
+          description: 'if present, GET returns 1 item from _content_ table'
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'one or more data structures which correspond to the site, pubtool and view requested'
+components:
+  schemas:
+    Aclentication\Middleware\AclMiddleware:
+      properties:
+        container: {  }
+        router: {  }
+      type: object
+    Admin\Handler\AddHandler:
+      allOf:
+        -
+          $ref: '#/components/schemas/Admin\Handler\Base'
+        - {  }
+    Admin\Handler\Base:
+      properties:
+        container: {  }
+        router: {  }
+      type: object
+    Admin\Handler\DeleteHandler:
+      allOf:
+        -
+          $ref: '#/components/schemas/Admin\Handler\Base'
+        - {  }
+    Admin\Handler\EditHandler:
+      allOf:
+        -
+          $ref: '#/components/schemas/Admin\Handler\Base'
+        - {  }
+    Admin\Handler\Factory\AnyHandlerFactory: {  }
+    Admin\Handler\ListHandler:
+      allOf:
+        -
+          $ref: '#/components/schemas/Admin\Handler\Base'
+        - {  }
+    Common\Adapter\CommonAdapter: {  }
+    Common\Adapter\Factory\CommonAdapterFactory: {  }
+    Common\ConfigProvider: {  }
+    Common\Entity\Base:
+      properties:
+        idCol:
+          description: 'name of the ID column'
+          type: string
+      type: object
+    Common\Entity\Content:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            contentID:
+              description: 'primary key'
+              type: integer
+            content_title:
+              type: string
+            content_show_title: {  }
+            content_body: {  }
+            content_permalink_id:
+              type: integer
+            content_meta_title:
+              type: string
+            content_meta_keyword:
+              type: string
+            content_meta_description:
+              type: string
+            content_display_order:
+              type: integer
+            content_created_date:
+              type: string
+              format: date-time
+            content_created_by:
+              description: 'Links to _user_ table; identifies who created the content'
+              type: integer
+            content_modified_date:
+              type: string
+              format: date-time
+            content_modified_by:
+              description: 'Links to _user_ table; identifies who last modified the content'
+              type: integer
+            content_published_date:
+              type: string
+              format: date-time
+            content_publishing_status: {  }
+            content_can_delete: {  }
+            content_completed_status: {  }
+            content_permissions_tag:
+              description: 'unique permission tag, used in an ACL assignment'
+              type: string
+            pubtool_pubtool_id:
+              type: integer
+            site_site_id:
+              type: integer
+          type: object
+    Common\Entity\EntityInterface: {  }
+    Common\Entity\Group:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            CREATE: {  }
+            groupID: {  }
+            group_name: {  }
+          type: object
+    Common\Entity\Permission:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            CREATE: {  }
+            permissionID: {  }
+            permission_tag: {  }
+          type: object
+    Common\Entity\Pubtool:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            pubtoolID:
+              description: 'primary key'
+              type: integer
+            pubtool_name:
+              type: string
+            pubtool_enabled: {  }
+            pubtool_permissions_tag:
+              description: 'unique permission tag, used in an ACL assignment'
+              type: string
+            site_site_id:
+              type: integer
+          type: object
+    Common\Entity\Site:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            siteID:
+              description: 'primary key'
+              type: integer
+            site_name:
+              type: string
+            site_url:
+              type: string
+            site_permissions_tag:
+              description: 'unique permission tag, used in an ACL assignment'
+              type: string
+          type: object
+    Common\Entity\User:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            CREATE: {  }
+            userID: {  }
+            user_name: {  }
+            user_email: {  }
+            user_password: {  }
+          type: object
+    Common\Entity\View:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Entity\Base'
+        -
+          properties:
+            viewID:
+              description: 'primary key'
+              type: integer
+            view_permalink:
+              type: string
+            view_type:
+              type: string
+            view_data_structure:
+              description: 'class name of data to output | output data structure'
+              type: string
+            view_permissions_tag:
+              description: 'unique permission tag, used in an ACL assignment'
+              type: string
+            pubtool_pubtool_id:
+              type: integer
+          type: object
+    Common\Generic\Constants: {  }
+    Common\Middleware\Factory\CommonMiddlewareFactory: {  }
+    Common\Middleware\SitePubViewMiddleware:
+      properties:
+        container: {  }
+        router: {  }
+        service: {  }
+        siteTable: {  }
+        pubtoolTable: {  }
+        viewTable: {  }
+        siteList:
+          description: Common\Entity\Site
+          type: array
+          items:
+            schema: Common\Entity\Site
+        pubtoolList:
+          description: Common\Entity\Pubtool
+          type: array
+          items:
+            schema: Common\Entity\Pubtool
+      type: object
+    Common\Table\Base:
+      properties:
+        name:
+          description: $data
+          type: array
+          items: Common\Entity\EntityInterface
+        tableGateway: {  }
+        container: {  }
+      type: object
+    Common\Table\Content:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\Group:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\Permission:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\Pubtool:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\Site:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\TableInterface: {  }
+    Common\Table\User:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+    Common\Table\View:
+      allOf:
+        -
+          $ref: '#/components/schemas/Common\Table\Base'
+        - {  }
+

@@ -96,7 +96,7 @@ CREATE TABLE `site` (
 
 LOCK TABLES `site` WRITE;
 /*!40000 ALTER TABLE `site` DISABLE KEYS */;
-INSERT INTO `site` VALUES (1,'api_unlikelysource','https://api.unlikelysource.com/', 'api-unlikelysource');
+INSERT INTO `site` VALUES (1,'unlikelysource','https://api.unlikelysource.com/', 'site-unlikelysource');
 /*!40000 ALTER TABLE `site` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,3 +172,16 @@ CREATE TABLE `permission_group_join` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
+--
+-- Table structure for table `view`
+--
+DROP TABLE IF EXISTS `view`;
+CREATE TABLE `view` (
+    `viewID` int(11) NOT NULL AUTO_INCREMENT,
+    `view_permalink` varchar(254) NOT NULL,
+    `view_data_structure` varchar(4096) DEFAULT NULL,
+    `view_type` enum('CLASS,JSON') DEFAULT NULL,
+    `view_permissions_tag` varchar(128) DEFAULT NULL,
+    `pubtool_pubtool_id` int(11) DEFAULT NULL,
+    PRIMARY KEY (`viewID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

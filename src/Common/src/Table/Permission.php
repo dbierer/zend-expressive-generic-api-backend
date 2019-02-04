@@ -11,7 +11,7 @@ CREATE TABLE `permission` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
  *
  * @author: doug@unlikelysource.com
- * @OA\Schema(schema="Common\Entity\Permission")
+ * @OA\Schema(schema="Common\Table\Permission")
  */
 
 class Permission extends Base
