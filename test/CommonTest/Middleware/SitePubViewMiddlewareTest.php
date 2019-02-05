@@ -51,7 +51,7 @@ class SitePubViewMiddlewareTest extends TestCase
         $this->handler    = $this->prophesize(RequestHandlerInterface::class);
         $this->request    = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         $this->response   = $this->prophesize(ResponseInterface::class);
-        $this->middleware = new SitePubViewMiddleware($this->container);
+        $this->middleware = new SitePubViewMiddleware($this->container, $this->router->reveal());
     }
 
     public function testReturnsJsonResponse()
