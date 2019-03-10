@@ -69,7 +69,7 @@ class SitePubViewMiddlewareTest extends TestCase
 
     public function testReturnsErrorIfSiteParamNoGood()
     {
-        $this->request->withAttribute(Constants::SITE_KEY, 'NoGood');
+        $this->request->withAttribute(Constants::KEY_SITE, 'NoGood');
         $response = $this->middleware->process($this->request, $this->handler->reveal())->willReturn($this->response->reveal());
         $payload  = $response->getPayload();
         $this->assertArrayHasKey(Constants::KEY_SITE, $payload[Constants::KEY_RESPONSE_ERROR]);
@@ -77,7 +77,7 @@ class SitePubViewMiddlewareTest extends TestCase
 
     public function testRedirectsIfTargetNotConstantsRouteView()
     {
-        $this->request->withTarget('/');
+        $this->request->withRequestTarget('/');
         $response = $this->middleware->process($this->request, $this->handler->reveal());
         $payload  = $response->getPayload();
         var_dump($payload);
